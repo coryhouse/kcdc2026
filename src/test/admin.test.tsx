@@ -194,6 +194,15 @@ describe('admin: add a food', () => {
       )
     })
 
+    it('moves focus to the first tag when no tag is picked', async () => {
+      await renderAdmin()
+
+      await fillForm({ ...draft, tags: [] })
+      await submit()
+
+      expect(screen.getByRole('checkbox', { name: 'Breakfast' })).toHaveFocus()
+    })
+
     it('clears a message once the field is being fixed', async () => {
       await renderAdmin()
 

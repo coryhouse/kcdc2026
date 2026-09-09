@@ -1,16 +1,24 @@
+import type { Ref } from 'react'
 import type { FoodTag } from '../food'
 
 type TagCheckboxProps = {
   tag: FoodTag
   selected: boolean
   onToggle: (tag: FoodTag) => void
+  /** Set on the checkbox itself, so a form can move focus to this pill. */
+  ref?: Ref<HTMLInputElement>
 }
 
 /**
  * A tag rendered as a pill-shaped checkbox. Used both to filter the menu and
  * to tag a new dish, so the two read as the same control.
  */
-export function TagCheckbox({ tag, selected, onToggle }: TagCheckboxProps) {
+export function TagCheckbox({
+  tag,
+  selected,
+  onToggle,
+  ref,
+}: TagCheckboxProps) {
   return (
     /* The input is sr-only, so the pill itself has to show the focus ring.
        has-[:focus-visible] rather than focus-within keeps it off mouse clicks. */
@@ -22,6 +30,7 @@ export function TagCheckbox({ tag, selected, onToggle }: TagCheckboxProps) {
       }`}
     >
       <input
+        ref={ref}
         type="checkbox"
         checked={selected}
         onChange={() => onToggle(tag)}

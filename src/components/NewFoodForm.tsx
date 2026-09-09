@@ -122,16 +122,24 @@ export function NewFoodForm({ onAdded }: NewFoodFormProps) {
     onAdded(created)
   }
 
-  /** What the field needs on it to announce its own error, if it has one. */
-  function fieldProps(field: FieldName) {
+  /** What a field needs on it to announce its own error, if it has one. */
+  function ariaProps(field: FieldName) {
     const message = errors[field]
     return {
-      ref: (element: HTMLElement | null) => {
-        controls.current.set(field, element)
-      },
       'aria-invalid': message ? true : undefined,
       'aria-describedby': message ? `new-food-${field}-error` : undefined,
     }
+  }
+
+  /** Remembers where to send focus when this field is the first one at fault. */
+  function focusTarget(field: FieldName) {
+    return (element: HTMLElement | null) => {
+      controls.current.set(field, element)
+    }
+  }
+
+  function fieldProps(field: FieldName) {
+    return { ref: focusTarget(field), ...ariaProps(field) }
   }
 
   return (
@@ -226,17 +234,19 @@ export function NewFoodForm({ onAdded }: NewFoodFormProps) {
           )}
         </div>
 
-        {/* The fieldset takes the invalid state, since no single checkbox is
-            the one at fault. */}
-        <fieldset {...fieldProps('tags')}>
+        {/* The fieldset carries the invalid state, since no single checkbox is
+            the one at fault — but a fieldset cannot take focus, so that goes to
+            the first pill instead. */}
+        <fieldset {...ariaProps('tags')}>
           <legend className={labelClass}>Tags</legend>
           <ul className="mt-3 flex flex-wrap gap-2">
-            {foodTags.map((tag) => (
+            {foodTags.map((tag, i) => (
               <li key={tag}>
                 <TagCheckbox
                   tag={tag}
                   selected={fields.tags.includes(tag)}
                   onToggle={toggleTag}
+                  ref={i === 0 ? focusTarget('tags') : undefined}
                 />
               </li>
             ))}
