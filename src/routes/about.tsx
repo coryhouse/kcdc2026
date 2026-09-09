@@ -7,8 +7,8 @@ export const Route = createFileRoute('/about')({
 function About() {
   return (
     <section>
-      <h1 className="text-3xl font-bold tracking-tight">About</h1>
-      <p className="mt-3 text-slate-600">
+      <h1 className="font-display text-4xl font-medium tracking-tight">About</h1>
+      <p className="mt-3 text-muted">
         A second route, here to prove that navigation works.
       </p>
     </section>
