@@ -1,4 +1,4 @@
-import type { Food } from '../food'
+import { foodImageSrc, type Food } from '../food'
 
 type FoodCardProps = {
   food: Food
@@ -14,13 +14,21 @@ const currency = new Intl.NumberFormat('en-US', {
 export function FoodCard({ food, priority = false }: FoodCardProps) {
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-[3px] border border-line bg-card">
-      <img
-        src={`/images/${food.image}`}
-        alt={food.name}
-        loading={priority ? 'eager' : 'lazy'}
-        decoding={priority ? 'sync' : 'async'}
-        className="aspect-square w-full object-cover"
-      />
+      {food.image === '' ? (
+        /* The admin preview renders before an image has been named. */
+        <div
+          aria-hidden
+          className="aspect-square w-full bg-ground/60 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,var(--line)_10px,var(--line)_11px)]"
+        />
+      ) : (
+        <img
+          src={foodImageSrc(food.image)}
+          alt={food.name}
+          loading={priority ? 'eager' : 'lazy'}
+          decoding={priority ? 'sync' : 'async'}
+          className="aspect-square w-full object-cover"
+        />
+      )}
 
       <div className="flex flex-1 flex-col gap-3 border-t border-line p-5">
         {/* Name and price share a baseline, the way a printed menu sets them. */}

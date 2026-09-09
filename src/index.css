@@ -8,6 +8,7 @@
   --color-line: var(--line);
   --color-strong: var(--strong);
   --color-muted: var(--muted);
+  --color-error: var(--error);
 
   --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
   --font-sans: 'Karla', system-ui, -apple-system, sans-serif;
@@ -21,6 +22,8 @@
   --line: #d8cab6;
   --strong: #2a201a;
   --muted: #6e5f51;
+  /* A brick red rather than a pure one, so it stays inside the warm palette. */
+  --error: #99291b;
   color-scheme: light;
 }
 
@@ -31,6 +34,7 @@
   --line: #3d2f26;
   --strong: #f2ebe0;
   --muted: #b3a291;
+  --error: #f0a08c;
   color-scheme: dark;
 }
 

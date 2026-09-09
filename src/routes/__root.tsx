@@ -24,6 +24,9 @@ function RootLayout() {
             <Link to="/about" className={navLinkClass}>
               About
             </Link>
+            <Link to="/admin" className={navLinkClass}>
+              Admin
+            </Link>
           </nav>
           <ThemeToggle />
         </div>

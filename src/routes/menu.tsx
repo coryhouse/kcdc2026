@@ -2,24 +2,29 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useMemo, useState } from 'react'
 import { FoodCard } from '../components/FoodCard'
 import { MenuFilters, type MenuFiltersValue } from '../components/MenuFilters'
-import { foods } from '../food'
+import { useFoods } from '../foodStore'
 
 export const Route = createFileRoute('/menu')({
   component: Menu,
 })
 
-/* Whole dollars keep the slider's labels and steps readable. */
-const priceRange = {
-  min: Math.floor(Math.min(...foods.map((food) => food.price))),
-  max: Math.ceil(Math.max(...foods.map((food) => food.price))),
-}
-
 function Menu() {
+  const foods = useFoods()
   const [filters, setFilters] = useState<MenuFiltersValue>({
     query: '',
     tags: [],
-    maxPrice: priceRange.max,
+    maxPrice: null,
   })
+
+  /* Whole dollars keep the slider's labels and steps readable. The range tracks
+     the menu, so an item added since page load widens it. */
+  const priceRange = useMemo(
+    () => ({
+      min: Math.floor(Math.min(...foods.map((food) => food.price))),
+      max: Math.ceil(Math.max(...foods.map((food) => food.price))),
+    }),
+    [foods],
+  )
 
   const results = useMemo(() => {
     const query = filters.query.trim().toLowerCase()
@@ -30,9 +35,11 @@ function Menu() {
         food.description.toLowerCase().includes(query)
       // Tags narrow rather than widen: a dish must carry every selected tag.
       const matchesTags = filters.tags.every((tag) => food.tags.includes(tag))
-      return matchesQuery && matchesTags && food.price <= filters.maxPrice
+      const matchesPrice =
+        filters.maxPrice === null || food.price <= filters.maxPrice
+      return matchesQuery && matchesTags && matchesPrice
     })
-  }, [filters])
+  }, [filters, foods])
 
   return (
     <section>

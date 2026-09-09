@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom/vitest'
 import { beforeEach, vi } from 'vitest'
+import { resetFoods } from '../foodStore'
 
 // jsdom does not implement scrollTo; the router's scrollRestoration calls it.
 window.scrollTo = () => {}
@@ -28,4 +29,7 @@ Object.defineProperty(window, 'matchMedia', {
 beforeEach(() => {
   localStorage.clear()
   document.documentElement.classList.remove('dark')
+  // The food store caches the added items in memory, so clearing storage alone
+  // would leave one test's additions on the next test's menu.
+  resetFoods()
 })
