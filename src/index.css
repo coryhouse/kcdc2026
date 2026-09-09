@@ -1,1 +1,56 @@
 @import 'tailwindcss';
+
+/* `inline` makes the utilities resolve var() at use time, so the palette can
+   be swapped at runtime by redefining the values below. */
+@theme inline {
+  --color-ground: var(--ground);
+  --color-card: var(--card);
+  --color-line: var(--line);
+  --color-strong: var(--strong);
+  --color-muted: var(--muted);
+
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Karla', system-ui, -apple-system, sans-serif;
+}
+
+/* Warm parchment. Both themes stay warm so the amber and wood tones in the
+   photography never sit against a cool gray. */
+:root {
+  --ground: #efe6d9;
+  --card: #fbf7f0;
+  --line: #d8cab6;
+  --strong: #2a201a;
+  --muted: #6e5f51;
+  color-scheme: light;
+}
+
+/* Low light: the ground is the weathered dark wood the food is shot on. */
+:root.dark {
+  --ground: #1a1310;
+  --card: #241a15;
+  --line: #3d2f26;
+  --strong: #f2ebe0;
+  --muted: #b3a291;
+  color-scheme: dark;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    /* On body, not just the app shell, so overscroll does not flash white. */
+    background-color: var(--ground);
+    color: var(--strong);
+  }
+
+  /* Fraunces carries the personality; a low optical size and some of the SOFT
+     axis keep it warm rather than editorial. */
+  .font-display {
+    font-variation-settings: 'opsz' 48, 'SOFT' 40;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--strong);
+    outline-offset: 3px;
+  }
+}

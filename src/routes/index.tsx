@@ -7,8 +7,8 @@ export const Route = createFileRoute('/')({
 function Home() {
   return (
     <section>
-      <h1 className="text-3xl font-bold tracking-tight">kcdc2026</h1>
-      <p className="mt-3 text-slate-600">
+      <h1 className="font-display text-4xl font-medium tracking-tight">kcdc2026</h1>
+      <p className="mt-3 text-muted">
         React 19 + Vite + TypeScript, with Tailwind CSS and TanStack Router.
       </p>
     </section>

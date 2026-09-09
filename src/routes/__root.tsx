@@ -1,24 +1,34 @@
 import { Link, Outlet, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { ThemeToggle } from '../components/ThemeToggle'
 
 export const Route = createRootRoute({
   component: RootLayout,
 })
 
+const navLinkClass =
+  'text-muted transition-colors hover:text-strong [&.active]:font-medium [&.active]:text-strong'
+
 function RootLayout() {
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="border-b border-slate-200 bg-white">
-        <nav className="mx-auto flex max-w-3xl gap-6 px-6 py-4 text-sm">
-          <Link to="/" className="text-slate-600 hover:text-slate-900 [&.active]:font-bold [&.active]:text-slate-900">
-            Home
-          </Link>
-          <Link to="/about" className="text-slate-600 hover:text-slate-900 [&.active]:font-bold [&.active]:text-slate-900">
-            About
-          </Link>
-        </nav>
+    <div className="min-h-screen bg-ground text-strong">
+      <header className="border-b border-line">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 sm:px-8">
+          <nav className="flex gap-6 text-sm">
+            <Link to="/" className={navLinkClass}>
+              Home
+            </Link>
+            <Link to="/menu" className={navLinkClass}>
+              Menu
+            </Link>
+            <Link to="/about" className={navLinkClass}>
+              About
+            </Link>
+          </nav>
+          <ThemeToggle />
+        </div>
       </header>
-      <main className="mx-auto max-w-3xl px-6 py-12">
+      <main className="mx-auto max-w-7xl px-6 py-14 sm:px-8">
         <Outlet />
       </main>
       <TanStackRouterDevtools />
