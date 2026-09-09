@@ -40,8 +40,10 @@ export function MenuFilters({
     })
   }
 
+  /* <search> maps to role="search", but the role is stated outright for
+     assistive tech that does not yet know the element. */
   return (
-    <search className="mt-10 border-y border-line py-6">
+    <search role="search" className="mt-10 border-y border-line py-6">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-end">
         <div className="flex-1">
           <label
