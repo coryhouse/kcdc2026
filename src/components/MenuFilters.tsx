@@ -25,8 +25,9 @@ export function MenuFilters({
   priceRange,
   resultCount,
 }: MenuFiltersProps) {
+  // Trimmed to match the filtering itself, so stray whitespace is not "a filter".
   const isFiltered =
-    value.query !== '' ||
+    value.query.trim() !== '' ||
     value.tags.length > 0 ||
     value.maxPrice < priceRange.max
 
