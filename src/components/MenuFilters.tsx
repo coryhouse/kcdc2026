@@ -1,9 +1,11 @@
 import { foodTags, type FoodTag } from '../food'
+import { TagCheckbox } from './TagCheckbox'
 
 export type MenuFiltersValue = {
   query: string
   tags: Array<FoodTag>
-  maxPrice: number
+  /** null means no ceiling, so items added later are not filtered out. */
+  maxPrice: number | null
 }
 
 type MenuFiltersProps = {
@@ -29,7 +31,7 @@ export function MenuFilters({
   const isFiltered =
     value.query.trim() !== '' ||
     value.tags.length > 0 ||
-    value.maxPrice < priceRange.max
+    (value.maxPrice !== null && value.maxPrice < priceRange.max)
 
   function toggleTag(tag: FoodTag) {
     onChange({
@@ -69,7 +71,7 @@ export function MenuFilters({
           >
             Max price
             <span className="text-sm tabular-nums normal-case text-strong">
-              {currency.format(value.maxPrice)}
+              {currency.format(value.maxPrice ?? priceRange.max)}
             </span>
           </label>
           <input
@@ -78,7 +80,7 @@ export function MenuFilters({
             min={priceRange.min}
             max={priceRange.max}
             step={1}
-            value={value.maxPrice}
+            value={value.maxPrice ?? priceRange.max}
             onChange={(e) =>
               onChange({ ...value, maxPrice: Number(e.target.value) })
             }
@@ -92,31 +94,15 @@ export function MenuFilters({
           Tags
         </legend>
         <ul className="mt-3 flex flex-wrap gap-2">
-          {foodTags.map((tag) => {
-            const selected = value.tags.includes(tag)
-            return (
-              <li key={tag}>
-                {/* The input is sr-only, so the pill itself has to show the
-                    focus ring. has-[:focus-visible] rather than focus-within
-                    keeps it off mouse clicks. */}
-                <label
-                  className={`flex cursor-pointer items-center rounded-full border px-3 py-1 text-xs transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-3 has-[:focus-visible]:outline-strong ${
-                    selected
-                      ? 'border-strong bg-strong text-card'
-                      : 'border-line text-muted hover:text-strong'
-                  }`}
-                >
-                  <input
-                    type="checkbox"
-                    checked={selected}
-                    onChange={() => toggleTag(tag)}
-                    className="sr-only"
-                  />
-                  {tag}
-                </label>
-              </li>
-            )
-          })}
+          {foodTags.map((tag) => (
+            <li key={tag}>
+              <TagCheckbox
+                tag={tag}
+                selected={value.tags.includes(tag)}
+                onToggle={toggleTag}
+              />
+            </li>
+          ))}
         </ul>
       </fieldset>
 
@@ -128,7 +114,7 @@ export function MenuFilters({
           <button
             type="button"
             onClick={() =>
-              onChange({ query: '', tags: [], maxPrice: priceRange.max })
+              onChange({ query: '', tags: [], maxPrice: null })
             }
             className="underline underline-offset-4 transition-colors hover:text-strong"
           >

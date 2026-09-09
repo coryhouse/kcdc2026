@@ -28,3 +28,6 @@ dist-ssr
 
 # Playwright MCP screenshots
 *-page.png
+
+# TanStack Router plugin cache
+.tanstack/

@@ -198,3 +198,12 @@ export const foods: Array<Food> = [
     tags: ["Lunch", "Dinner", "Vegetarian"],
   },
 ];
+
+/**
+ * Where a food's image actually lives. Seeded items name a file in
+ * `public/images`; items added through the admin form may point at a full URL
+ * or an absolute path instead, since there is nowhere to upload a file to.
+ */
+export function foodImageSrc(image: string): string {
+  return /^(https?:\/\/|\/)/.test(image) ? image : `/images/${image}`;
+}
