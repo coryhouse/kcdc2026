@@ -96,8 +96,11 @@ export function MenuFilters({
             const selected = value.tags.includes(tag)
             return (
               <li key={tag}>
+                {/* The input is sr-only, so the pill itself has to show the
+                    focus ring. has-[:focus-visible] rather than focus-within
+                    keeps it off mouse clicks. */}
                 <label
-                  className={`flex cursor-pointer items-center rounded-full border px-3 py-1 text-xs transition-colors ${
+                  className={`flex cursor-pointer items-center rounded-full border px-3 py-1 text-xs transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-3 has-[:focus-visible]:outline-strong ${
                     selected
                       ? 'border-strong bg-strong text-card'
                       : 'border-line text-muted hover:text-strong'
